@@ -1,11 +1,12 @@
 
 import axios from 'axios';
+import 'dotenv/config';
 import { Movie, MovieDetails, Genre, Credits, Video } from '../types/movie';
 
 // Note: In a real application, you would store this in environment variables
 // For this demo, users need to replace this with their actual TMDb API key
-const API_KEY = 'ac94ea7f3f6cbdc965e0933c67cef607';
-const BASE_URL = 'https://api.themoviedb.org/3';
+   const API_KEY = process.env.TMDB_API_KEY || '';
+   const BASE_URL = 'https://api.themoviedb.org/3';
 
 const api = axios.create({
   baseURL: BASE_URL,
@@ -16,7 +17,7 @@ const api = axios.create({
 
 // Add request interceptor to check for API key
 api.interceptors.request.use((config) => {
-  if (API_KEY === 'YOUR_TMDB_API_KEY_HERE') {
+  if (!API_KEY || API_KEY.length < 10) {
     throw new Error('Please set your TMDb API key in src/api/tmdb.ts');
   }
   return config;
